@@ -23,6 +23,17 @@ Trading execution: deliberately disabled in this starter.
 5. Obtain the Bank Nifty index code from the official Motilal index master/API documentation and set `MOTILAL_BANKNIFTY_INDEX_CODE`. Do not guess the token.
 6. Run `streamlit run app.py`.
 
+## Data sources (pick in the sidebar)
+| Source | Cost | Account / keys | Static IP | Notes |
+|---|---|---|---|---|
+| Yahoo Finance (default) | Free | None | Not needed | Unofficial; may be delayed. Includes 1-minute intraday chart. |
+| Fyers API | Free | Fyers account, `FYERS_APP_ID`, `FYERS_ACCESS_TOKEN` | Not needed for data APIs (Fyers: static IP only for order placement) | Access token must be regenerated daily. |
+| Motilal Oswal API | Free with account | 8 `MOTILAL_*` settings | Check with Motilal | Original connector. |
+
+SEBI's April 2026 retail-algo rules require a whitelisted static IP for API **order placement**. This app is read-only and never places orders.
+
+Settings go in a local `.env` file (copied from `.env.example`); the app loads it automatically. The sidebar "Settings status" shows ✅/❌ per setting without revealing values.
+
 ## Important integration notes
 - The current adapter calls Motilal's documented `getindexltpdata` REST endpoint. It is a periodic quote snapshot, not tick streaming.
 - Motilal's API docs state authentication headers and show that access tokens expire at 6 AM. A robust production build must implement the supported login/token renewal flow securely and handle OTP/TOTP; this starter intentionally does not store passwords or TOTP secrets.
